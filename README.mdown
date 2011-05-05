@@ -1,0 +1,13 @@
+NYU Campus Dish Scraper
+===
+
+Following [Michael Strickland](https://github.com/abstrctn/)'s lead and open
+sourcing some scrapers. This scraper parses NYU's dining menus. Unfortunately
+Hayden + Weinstein are broken at this time. It can not be scraped since their
+urls do not work.
+
+
+The scraper currently prints out a JSON feed, but you are free to manipulate it
+to your needs.
+
+_Scraper Last Updated: 05/04/2011_
