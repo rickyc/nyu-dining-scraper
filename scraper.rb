@@ -8,7 +8,7 @@ require 'open-uri'
 # http://www.campusdish.com/en-US/CSE/NYU/Locations/WeinsteinDiningHallMenu.htm
 # Hayden Broken
 # http://www.campusdish.com/en-US/CSE/NYU/Locations/HaydenDiningHallMenu.htm
-feed_urls = [
+LOCATIONS = [
   'http://www.campusdish.com/en-US/CSE/NYU/Locations/ThirdNorthMenu.htm?LocationName=Third%20North%20Menu&OrgID=193900&ShowPrice=False&ShowNutrition=True',
   'http://www.campusdish.com/en-US/CSE/NYU/Locations/PalladiumFoodCourtMenu.htm?LocationName=Palladium%20Food%20Court%20Menu&OrgID=193900&ShowPrice=False&ShowNutrition=True',
   'http://www.campusdish.com/en-US/CSE/NYU/Locations/RubinDiningHallMenu.htm?LocationName=Rubin%20Dining%20Hall%20Menu&OrgID=193900&ShowPrice=False&ShowNutrition=True'
@@ -16,25 +16,23 @@ feed_urls = [
 
 # Scraper
 hsh = {}
-feed_urls.each do |url|
+LOCATIONS.each do |url|
   date = '5/1/2011'.to_date
 
   # Loop through three weeks from the starting date, 5/1, 5/8, 5/15
   (1..3).each do 
-    tmp_url = "#{url}&Date=#{date.month}_#{date.day}_#{date.year}"
+    base_url = "#{url}&Date=#{date.month}_#{date.day}_#{date.year}"
 
     # MealID for GET param (16 is lunch, 17 is dinner, 603 is brunch)
     [16,17,603].each do |i|
-      # Brunch only occurs for Palladium
-      if i == 603
-        break if url.index('Palladium').nil?
-      end
 
-      cuisine = ''
-      tdate = date
+      # Brunch only occurs for Palladium
+      break if (i == 603 && url.index('Palladium').nil?)
+
+      cuisine, tdate = '', date
       meal = (i == 16) ? 'lunch' : (i == 17) ? 'dinner' : (i == 603) ? 'brunch' : '' 
 
-      final_url = "#{tmp_url}&MealID=#{i}"
+      final_url = "#{base_url}&MealID=#{i}"
       doc = Nokogiri::HTML(open(final_url))  
       root = doc.xpath("//td[@align='left' and @bgcolor='#ffffff']")[1]
 
